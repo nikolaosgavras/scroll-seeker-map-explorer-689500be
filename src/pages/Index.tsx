@@ -98,18 +98,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-800 to-orange-900 flex">
+    <div className="min-h-screen bg-[#050A14] flex">
       {/* Left Panel - Selected Treasures */}
-      <div className="w-80 bg-gradient-to-b from-slate-800 to-slate-900 border-r-2 border-amber-600 shadow-xl">
-        <div className="p-6 border-b border-amber-600">
-          <h2 className="text-2xl font-bold text-amber-300 flex items-center gap-2">
-            <Scroll className="w-6 h-6" />
+      <div className="w-80 bg-[#0A1128] border-r border-[#1E3A8A]/30 shadow-xl">
+        <div className="p-6 border-b border-[#1E3A8A]/30">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <Scroll className="w-6 h-6 text-[#FCD34D]" />
             Discovered Treasures
           </h2>
         </div>
         <div className="p-4 h-[calc(100vh-100px)] overflow-y-auto">
           {selectedTreasures.length === 0 ? (
-            <div className="text-center text-slate-400 mt-8">
+            <div className="text-center text-gray-400 mt-8">
               <Scroll className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>No treasures discovered yet</p>
               <p className="text-sm mt-2">Search for clues to begin your adventure!</p>
@@ -117,16 +117,16 @@ const Index = () => {
           ) : (
             <div className="space-y-4">
               {selectedTreasures.map((treasure) => (
-                <Card key={treasure.id} className="bg-gradient-to-r from-amber-100 to-yellow-100 border-amber-400 p-4 relative">
+                <Card key={treasure.id} className="bg-[#1E3A8A]/10 border-[#1E3A8A]/30 p-4 relative backdrop-blur-sm">
                   <Button
                     onClick={() => removeTreasure(treasure.id)}
-                    className="absolute top-2 right-2 h-6 w-6 p-0 bg-red-500 hover:bg-red-600"
+                    className="absolute top-2 right-2 h-6 w-6 p-0 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3 h-3 text-red-400" />
                   </Button>
-                  <h3 className="font-bold text-amber-800 mb-2">{treasure.name}</h3>
-                  <p className="text-sm text-amber-700 italic mb-2">"{treasure.clue}"</p>
-                  <p className="text-xs text-amber-600">{treasure.description}</p>
+                  <h3 className="font-bold text-white mb-2">{treasure.name}</h3>
+                  <p className="text-sm text-gray-300 italic mb-2">"{treasure.clue}"</p>
+                  <p className="text-xs text-gray-400">{treasure.description}</p>
                 </Card>
               ))}
             </div>
@@ -137,17 +137,17 @@ const Index = () => {
       {/* Main Map Area */}
       <div className="flex-1 relative">
         <div className="absolute top-4 left-4 z-10 flex gap-2">
-          <Button onClick={handleZoomIn} className="bg-amber-700 hover:bg-amber-600">
-            <ZoomIn className="w-4 h-4" />
+          <Button onClick={handleZoomIn} className="bg-[#1E3A8A]/20 hover:bg-[#1E3A8A]/30 border border-[#1E3A8A]/30">
+            <ZoomIn className="w-4 h-4 text-white" />
           </Button>
-          <Button onClick={handleZoomOut} className="bg-amber-700 hover:bg-amber-600">
-            <ZoomOut className="w-4 h-4" />
+          <Button onClick={handleZoomOut} className="bg-[#1E3A8A]/20 hover:bg-[#1E3A8A]/30 border border-[#1E3A8A]/30">
+            <ZoomOut className="w-4 h-4 text-white" />
           </Button>
         </div>
         
         <div 
           ref={mapRef}
-          className="w-full h-screen overflow-hidden cursor-move relative bg-gradient-to-br from-green-800 via-green-700 to-emerald-800"
+          className="w-full h-screen overflow-hidden cursor-move relative bg-[#050A14]"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -173,11 +173,11 @@ const Index = () => {
             {selectedTreasures.map((treasure) => (
               <div
                 key={treasure.id}
-                className="absolute w-8 h-8 transform -translate-x-1/2 -translate-y-1/2 animate-bounce"
+                className="absolute w-6 h-6 transform -translate-x-1/2 -translate-y-1/2"
                 style={{ left: treasure.x, top: treasure.y }}
               >
-                <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full border-2 border-amber-600 shadow-lg flex items-center justify-center">
-                  <div className="w-3 h-3 bg-amber-300 rounded-full"></div>
+                <div className="w-full h-full bg-gradient-to-r from-[#FCD34D] to-[#F59E0B] rounded-full border-2 border-[#FCD34D] shadow-lg flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
                 </div>
               </div>
             ))}
@@ -186,10 +186,10 @@ const Index = () => {
       </div>
 
       {/* Right Panel - Search */}
-      <div className="w-96 bg-gradient-to-b from-slate-800 to-slate-900 border-l-2 border-amber-600 shadow-xl">
-        <div className="p-6 border-b border-amber-600">
-          <h2 className="text-2xl font-bold text-amber-300 flex items-center gap-2 mb-4">
-            <Search className="w-6 h-6" />
+      <div className="w-96 bg-[#0A1128] border-l border-[#1E3A8A]/30 shadow-xl flex flex-col h-screen">
+        <div className="p-6 border-b border-[#1E3A8A]/30">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-4">
+            <Search className="w-6 h-6 text-[#FCD34D]" />
             Treasure Clues
           </h2>
           
@@ -199,19 +199,19 @@ const Index = () => {
               placeholder="Enter treasure clue..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              className="bg-slate-700 border-amber-600 text-amber-100 placeholder-amber-400 focus:border-amber-400"
+              className="bg-[#1E3A8A]/10 border-[#1E3A8A]/30 text-white placeholder-gray-400 focus:border-[#FCD34D] focus:ring-[#FCD34D]"
             />
             
             {filteredSuggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 bg-slate-700 border border-amber-600 rounded-md mt-1 max-h-64 overflow-y-auto z-20">
+              <div className="absolute top-full left-0 right-0 bg-[#0A1128]/95 border border-[#1E3A8A]/30 rounded-md mt-1 max-h-64 overflow-y-auto z-20 backdrop-blur-sm">
                 {filteredSuggestions.map((treasure) => (
                   <div
                     key={treasure.id}
                     onClick={() => handleTreasureSelect(treasure)}
-                    className="p-3 hover:bg-amber-700 cursor-pointer border-b border-slate-600 last:border-b-0"
+                    className="p-3 hover:bg-[#1E3A8A]/20 cursor-pointer border-b border-[#1E3A8A]/20 last:border-b-0"
                   >
-                    <div className="font-semibold text-amber-300">{treasure.name}</div>
-                    <div className="text-sm text-amber-200 italic">"{treasure.clue}"</div>
+                    <div className="font-semibold text-white">{treasure.name}</div>
+                    <div className="text-sm text-gray-300 italic">"{treasure.clue}"</div>
                   </div>
                 ))}
               </div>
@@ -219,21 +219,23 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-amber-300 mb-4">Available Clues</h3>
-          <div className="space-y-3 max-h-96 overflow-y-auto">
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <div className="p-6 pb-2">
+            <h3 className="text-lg font-semibold text-white">Available Clues</h3>
+          </div>
+          <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-3">
             {treasures.map((treasure) => (
               <Card 
                 key={treasure.id} 
                 onClick={() => handleTreasureSelect(treasure)}
                 className={`p-3 cursor-pointer transition-all hover:scale-105 ${
                   selectedTreasures.find(t => t.id === treasure.id)
-                    ? 'bg-green-100 border-green-400'
-                    : 'bg-amber-50 border-amber-300 hover:bg-amber-100'
+                    ? 'bg-[#1E3A8A]/20 border-[#FCD34D]'
+                    : 'bg-[#1E3A8A]/10 border-[#1E3A8A]/30 hover:bg-[#1E3A8A]/20'
                 }`}
               >
-                <h4 className="font-semibold text-amber-800">{treasure.name}</h4>
-                <p className="text-sm text-amber-700 italic">"{treasure.clue}"</p>
+                <h4 className="font-semibold text-white">{treasure.name}</h4>
+                <p className="text-sm text-gray-300 italic">"{treasure.clue}"</p>
               </Card>
             ))}
           </div>
