@@ -12,17 +12,18 @@ interface Treasure {
   x: number;
   y: number;
   description: string;
+  picture_url?: string;
 }
 
 const Index = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedTreasures, setSelectedTreasures] = useState<Treasure[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Treasure[]>([]);
-  const [allTreasures, setAllTreasures] = useState<Treasure[]>([]);
   const [zoom, setZoom] = useState(1);
   const [mapPosition, setMapPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [treasures, setTreasures] = useState<Treasure[]>([]);
   const mapRef = useRef<HTMLDivElement>(null);
 
   // Fetch treasures from Supabase
@@ -37,7 +38,9 @@ const Index = () => {
         return;
       }
 
-      setAllTreasures(data);
+      if (data) {
+        setTreasures(data);
+      }
     };
 
     fetchTreasures();
@@ -46,7 +49,7 @@ const Index = () => {
   // Filter suggestions based on search text
   useEffect(() => {
     if (searchText.trim()) {
-      const filtered = allTreasures.filter(treasure =>
+      const filtered = treasures.filter(treasure =>
         treasure.clue.toLowerCase().includes(searchText.toLowerCase()) ||
         treasure.name.toLowerCase().includes(searchText.toLowerCase())
       );
@@ -54,7 +57,7 @@ const Index = () => {
     } else {
       setFilteredSuggestions([]);
     }
-  }, [searchText, allTreasures]);
+  }, [searchText, treasures]);
 
   const handleTreasureSelect = (treasure: Treasure) => {
     if (!selectedTreasures.find(t => t.id === treasure.id)) {
@@ -223,7 +226,7 @@ const Index = () => {
         <div className="p-6">
           <h3 className="text-lg font-semibold text-amber-300 mb-4">Available Clues</h3>
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {allTreasures.map((treasure) => (
+            {treasures.map((treasure) => (
               <Card 
                 key={treasure.id} 
                 className={`p-3 cursor-pointer transition-all hover:scale-105 ${
