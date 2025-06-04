@@ -156,14 +156,17 @@ const Index = () => {
           <div 
             className="relative"
             style={{
-              transform: `translate(${mapPosition.x}px, ${mapPosition.y}px) scale(${zoom})`,
               transformOrigin: 'center',
-              width: '100%',
-              height: '100%',
+              width: '900px',
+              height: '900px',
               backgroundImage: `url('/map.webp')`,
               backgroundSize: 'contain',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: `translate(-50%, -50%) translate(${mapPosition.x}px, ${mapPosition.y}px) scale(${zoom})`,
             }}
           >
             {/* Treasure markers */}
