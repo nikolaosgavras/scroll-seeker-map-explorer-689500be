@@ -163,6 +163,7 @@ const Index = () => {
               backgroundImage: `url('/map.webp')`,
               backgroundSize: 'contain',
               backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             {/* Treasure markers */}
