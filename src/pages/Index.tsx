@@ -158,8 +158,8 @@ const Index = () => {
             style={{
               transform: `translate(${mapPosition.x}px, ${mapPosition.y}px) scale(${zoom})`,
               transformOrigin: 'center',
-              width: '800px',
-              height: '600px',
+              width: '100%',
+              height: '100%',
               backgroundImage: `url('/map.webp')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
