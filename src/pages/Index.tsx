@@ -21,12 +21,7 @@ const Index = () => {
   const { treasures, selectedTreasures, loading, addTreasure, removeTreasure } = useTreasures();
   const navigate = useNavigate();
 
-  // Redirect to auth if not logged in
-  useEffect(() => {
-    if (!user && !loading) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
+
 
   // Filter suggestions based on search text
   useEffect(() => {
