@@ -165,12 +165,6 @@ const Index = () => {
               backgroundPosition: 'center',
             }}
           >
-            {/* Map terrain features */}
-            <div className="absolute top-16 left-32 w-24 h-24 bg-gray-600 rounded-full shadow-lg"></div>
-            <div className="absolute top-32 left-64 w-16 h-16 bg-gray-500 rounded-full shadow-md"></div>
-            <div className="absolute bottom-32 right-48 w-32 h-8 bg-blue-400 rounded-full opacity-70"></div>
-            <div className="absolute bottom-48 left-24 w-20 h-20 bg-green-600 rounded-full opacity-80"></div>
-            
             {/* Treasure markers */}
             {selectedTreasures.map((treasure) => (
               <div
@@ -227,6 +221,7 @@ const Index = () => {
             {treasures.map((treasure) => (
               <Card 
                 key={treasure.id} 
+                onClick={() => handleTreasureSelect(treasure)}
                 className={`p-3 cursor-pointer transition-all hover:scale-105 ${
                   selectedTreasures.find(t => t.id === treasure.id)
                     ? 'bg-green-100 border-green-400'
