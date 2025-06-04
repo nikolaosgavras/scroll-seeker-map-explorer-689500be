@@ -231,7 +231,7 @@ const Index = () => {
                   selectedTreasures.find(t => t.id === treasure.id)
                     ? 'bg-green-100 border-green-400'
                     : 'bg-amber-50 border-amber-300 hover:bg-amber-100'
-                }`
+                }`}
               >
                 <h4 className="font-semibold text-amber-800">{treasure.name}</h4>
                 <p className="text-sm text-amber-700 italic">"{treasure.clue}"</p>
