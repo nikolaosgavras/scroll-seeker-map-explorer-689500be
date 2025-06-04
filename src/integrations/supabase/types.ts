@@ -9,65 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      treasures: {
-        Row: {
-          clue: string
-          created_at: string
-          description: string
-          id: string
-          name: string
-          x: number
-          y: number
-        }
-        Insert: {
-          clue: string
-          created_at?: string
-          description: string
-          id?: string
-          name: string
-          x: number
-          y: number
-        }
-        Update: {
-          clue?: string
-          created_at?: string
-          description?: string
-          id?: string
-          name?: string
-          x?: number
-          y?: number
-        }
-        Relationships: []
-      }
-      user_discoveries: {
-        Row: {
-          discovered_at: string
-          id: string
-          treasure_id: string
-          user_id: string
-        }
-        Insert: {
-          discovered_at?: string
-          id?: string
-          treasure_id: string
-          user_id: string
-        }
-        Update: {
-          discovered_at?: string
-          id?: string
-          treasure_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_discoveries_treasure_id_fkey"
-            columns: ["treasure_id"]
-            isOneToOne: false
-            referencedRelation: "treasures"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never

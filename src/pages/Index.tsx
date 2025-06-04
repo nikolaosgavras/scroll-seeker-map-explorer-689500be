@@ -1,15 +1,74 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Map as MapIcon, Scroll, X, ZoomIn, ZoomOut, LogOut } from 'lucide-react';
+import { Search, Map as MapIcon, Scroll, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useAuth } from '@/hooks/useAuth';
-import { useTreasures, Treasure } from '@/hooks/useTreasures';
-import { useNavigate } from 'react-router-dom';
+
+// Sample treasure data with clues and coordinates
+const treasureData = [
+  {
+    id: 1,
+    name: "Golden Chalice",
+    clue: "Where ancient stones meet the morning sun",
+    x: 300,
+    y: 200,
+    description: "A magnificent golden chalice embedded with emeralds"
+  },
+  {
+    id: 2,
+    name: "Silver Compass",
+    clue: "Beneath the weeping willow's shade",
+    x: 150,
+    y: 350,
+    description: "An ornate silver compass that always points to treasure"
+  },
+  {
+    id: 3,
+    name: "Ruby Ring",
+    clue: "Where the river bends twice under moonlight",
+    x: 450,
+    y: 280,
+    description: "A ruby ring said to grant the wearer good fortune"
+  },
+  {
+    id: 4,
+    name: "Ancient Scroll",
+    clue: "In the shadow of the tallest peak",
+    x: 200,
+    y: 100,
+    description: "An ancient scroll containing forgotten magic spells"
+  },
+  {
+    id: 5,
+    name: "Emerald Necklace",
+    clue: "Where wildflowers dance in summer breeze",
+    x: 380,
+    y: 400,
+    description: "A stunning emerald necklace from a lost civilization"
+  },
+  {
+    id: 6,
+    name: "Dragon's Eye",
+    clue: "Deep in the cavern where echoes dwell",
+    x: 100,
+    y: 180,
+    description: "A mystical gem that glows with inner fire"
+  }
+];
+
+interface Treasure {
+  id: number;
+  name: string;
+  clue: string;
+  x: number;
+  y: number;
+  description: string;
+}
 
 const Index = () => {
   const [searchText, setSearchText] = useState('');
+  const [selectedTreasures, setSelectedTreasures] = useState<Treasure[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Treasure[]>([]);
   const [zoom, setZoom] = useState(1);
   const [mapPosition, setMapPosition] = useState({ x: 0, y: 0 });
@@ -17,16 +76,10 @@ const Index = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const { user, signOut } = useAuth();
-  const { treasures, selectedTreasures, loading, addTreasure, removeTreasure } = useTreasures();
-  const navigate = useNavigate();
-
-
-
   // Filter suggestions based on search text
   useEffect(() => {
     if (searchText.trim()) {
-      const filtered = treasures.filter(treasure =>
+      const filtered = treasureData.filter(treasure =>
         treasure.clue.toLowerCase().includes(searchText.toLowerCase()) ||
         treasure.name.toLowerCase().includes(searchText.toLowerCase())
       );
@@ -34,14 +87,18 @@ const Index = () => {
     } else {
       setFilteredSuggestions([]);
     }
-  }, [searchText, treasures]);
+  }, [searchText]);
 
-  const handleTreasureSelect = async (treasure: Treasure) => {
-    const success = await addTreasure(treasure);
-    if (success) {
-      setSearchText('');
-      setFilteredSuggestions([]);
+  const handleTreasureSelect = (treasure: Treasure) => {
+    if (!selectedTreasures.find(t => t.id === treasure.id)) {
+      setSelectedTreasures([...selectedTreasures, treasure]);
     }
+    setSearchText('');
+    setFilteredSuggestions([]);
+  };
+
+  const removeTreasure = (treasureId: number) => {
+    setSelectedTreasures(selectedTreasures.filter(t => t.id !== treasureId));
   };
 
   const handleZoomIn = () => {
@@ -70,45 +127,17 @@ const Index = () => {
     setIsDragging(false);
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-800 to-orange-900 flex items-center justify-center">
-        <div className="text-amber-300 text-xl">Loading treasures...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null; // Will redirect to auth
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-900 via-amber-800 to-orange-900 flex">
       {/* Left Panel - Selected Treasures */}
       <div className="w-80 bg-gradient-to-b from-slate-800 to-slate-900 border-r-2 border-amber-600 shadow-xl">
         <div className="p-6 border-b border-amber-600">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-amber-300 flex items-center gap-2">
-              <Scroll className="w-6 h-6" />
-              Discovered Treasures
-            </h2>
-            <Button
-              onClick={handleSignOut}
-              variant="outline"
-              size="sm"
-              className="border-amber-600 text-amber-300 hover:bg-amber-700"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-          <p className="text-amber-200 text-sm">Welcome, {user.email}</p>
+          <h2 className="text-2xl font-bold text-amber-300 flex items-center gap-2">
+            <Scroll className="w-6 h-6" />
+            Discovered Treasures
+          </h2>
         </div>
-        <div className="p-4 h-[calc(100vh-140px)] overflow-y-auto">
+        <div className="p-4 h-[calc(100vh-100px)] overflow-y-auto">
           {selectedTreasures.length === 0 ? (
             <div className="text-center text-slate-400 mt-8">
               <Scroll className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -227,7 +256,7 @@ const Index = () => {
         <div className="p-6">
           <h3 className="text-lg font-semibold text-amber-300 mb-4">Available Clues</h3>
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {treasures.map((treasure) => (
+            {treasureData.map((treasure) => (
               <Card 
                 key={treasure.id} 
                 className={`p-3 cursor-pointer transition-all hover:scale-105 ${
