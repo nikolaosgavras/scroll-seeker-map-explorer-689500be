@@ -161,7 +161,7 @@ const Index = () => {
               width: '100%',
               height: '100%',
               backgroundImage: `url('/map.webp')`,
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center',
             }}
           >
