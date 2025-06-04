@@ -181,7 +181,7 @@ const Index = () => {
         
         <div 
           ref={mapRef}
-          className="w-full h-full overflow-hidden cursor-move relative bg-[#050A14] flex items-center justify-center touch-none"
+          className={`w-full h-full overflow-hidden relative bg-[#050A14] flex items-center justify-center touch-none ${isDragging ? 'cursor-grabbing' : ''}`}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
