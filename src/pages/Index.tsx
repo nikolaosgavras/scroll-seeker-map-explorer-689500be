@@ -1,64 +1,12 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Map as MapIcon, Scroll, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-
-// Sample treasure data with clues and coordinates
-const treasureData = [
-  {
-    id: 1,
-    name: "Golden Chalice",
-    clue: "Where ancient stones meet the morning sun",
-    x: 300,
-    y: 200,
-    description: "A magnificent golden chalice embedded with emeralds"
-  },
-  {
-    id: 2,
-    name: "Silver Compass",
-    clue: "Beneath the weeping willow's shade",
-    x: 150,
-    y: 350,
-    description: "An ornate silver compass that always points to treasure"
-  },
-  {
-    id: 3,
-    name: "Ruby Ring",
-    clue: "Where the river bends twice under moonlight",
-    x: 450,
-    y: 280,
-    description: "A ruby ring said to grant the wearer good fortune"
-  },
-  {
-    id: 4,
-    name: "Ancient Scroll",
-    clue: "In the shadow of the tallest peak",
-    x: 200,
-    y: 100,
-    description: "An ancient scroll containing forgotten magic spells"
-  },
-  {
-    id: 5,
-    name: "Emerald Necklace",
-    clue: "Where wildflowers dance in summer breeze",
-    x: 380,
-    y: 400,
-    description: "A stunning emerald necklace from a lost civilization"
-  },
-  {
-    id: 6,
-    name: "Dragon's Eye",
-    clue: "Deep in the cavern where echoes dwell",
-    x: 100,
-    y: 180,
-    description: "A mystical gem that glows with inner fire"
-  }
-];
+import { supabase } from '@/integrations/supabase/client';
 
 interface Treasure {
-  id: number;
+  id: string;
   name: string;
   clue: string;
   x: number;
@@ -70,16 +18,35 @@ const Index = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedTreasures, setSelectedTreasures] = useState<Treasure[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Treasure[]>([]);
+  const [allTreasures, setAllTreasures] = useState<Treasure[]>([]);
   const [zoom, setZoom] = useState(1);
   const [mapPosition, setMapPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const mapRef = useRef<HTMLDivElement>(null);
 
+  // Fetch treasures from Supabase
+  useEffect(() => {
+    const fetchTreasures = async () => {
+      const { data, error } = await supabase
+        .from('treasures')
+        .select('*');
+      
+      if (error) {
+        console.error('Error fetching treasures:', error);
+        return;
+      }
+
+      setAllTreasures(data);
+    };
+
+    fetchTreasures();
+  }, []);
+
   // Filter suggestions based on search text
   useEffect(() => {
     if (searchText.trim()) {
-      const filtered = treasureData.filter(treasure =>
+      const filtered = allTreasures.filter(treasure =>
         treasure.clue.toLowerCase().includes(searchText.toLowerCase()) ||
         treasure.name.toLowerCase().includes(searchText.toLowerCase())
       );
@@ -87,7 +54,7 @@ const Index = () => {
     } else {
       setFilteredSuggestions([]);
     }
-  }, [searchText]);
+  }, [searchText, allTreasures]);
 
   const handleTreasureSelect = (treasure: Treasure) => {
     if (!selectedTreasures.find(t => t.id === treasure.id)) {
@@ -97,7 +64,7 @@ const Index = () => {
     setFilteredSuggestions([]);
   };
 
-  const removeTreasure = (treasureId: number) => {
+  const removeTreasure = (treasureId: string) => {
     setSelectedTreasures(selectedTreasures.filter(t => t.id !== treasureId));
   };
 
@@ -256,7 +223,7 @@ const Index = () => {
         <div className="p-6">
           <h3 className="text-lg font-semibold text-amber-300 mb-4">Available Clues</h3>
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {treasureData.map((treasure) => (
+            {allTreasures.map((treasure) => (
               <Card 
                 key={treasure.id} 
                 className={`p-3 cursor-pointer transition-all hover:scale-105 ${
