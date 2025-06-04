@@ -160,11 +160,9 @@ const Index = () => {
               transformOrigin: 'center',
               width: '800px',
               height: '600px',
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(22, 163, 74, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(16, 124, 16, 0.3) 0%, transparent 50%)
-              `
+              backgroundImage: `url('/map.webp')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
             }}
           >
             {/* Map terrain features */}
@@ -233,18 +231,4 @@ const Index = () => {
                   selectedTreasures.find(t => t.id === treasure.id)
                     ? 'bg-green-100 border-green-400'
                     : 'bg-amber-50 border-amber-300 hover:bg-amber-100'
-                }`}
-                onClick={() => handleTreasureSelect(treasure)}
-              >
-                <h4 className="font-semibold text-amber-800">{treasure.name}</h4>
-                <p className="text-sm text-amber-700 italic">"{treasure.clue}"</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Index;
+                }`
